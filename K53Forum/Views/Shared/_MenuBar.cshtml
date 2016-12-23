@@ -1,0 +1,79 @@
+﻿@{
+    var category = (List<K53Forum.Models.Category>)ViewBag.Category;
+    var post = (List<K53Forum.Models.Post>)ViewBag.Post;
+    var count = ViewBag.Count;
+}
+@section scripts{
+    <div id="fb-root"></div>
+    <script>
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.8&appId=1312140305471378";
+            fjs.parentNode.insertBefore(js, fjs);
+        } (document, 'script', 'facebook-jssdk'));</script>
+}
+
+@if (Membership.GetUser() != null)
+{
+    <div class="p-b-10">
+        <a href="@Url.Action("create","post")" class="btn btn-primary btn-block"><i class="fa fa-edit" aria-hidden="true"></i> Tạo cuộc thảo luận</a>
+    </div>
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Tìm kiếm</strong>
+    </div>
+    <div class="panel-body">
+        <form>
+            <fieldset class="form-group">
+                <input type="text" class="form-control" id="search" placeholder="Nhập từ khóa...">
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Chuyên mục</strong>
+    </div>
+    <div class="panel-body">
+        <p>
+            <span class="badge pull-right">@ViewBag.Count</span>
+            <a href="/category/index"><i class="fa fa-folder" aria-hidden="true"></i> Tất cả chuyên mục</a>
+        </p>
+        @foreach (var c in category)
+            {
+            <p>
+                <span class="badge pull-right">@c.Posts.Count()</span>
+                <a href="/category/details/@c.Id"><i class="fa fa-folder" aria-hidden="true"></i> @c.Name</a>
+            </p>
+        }
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Thảo luận tiêu biểu</strong>
+    </div>
+    <div class="panel-body">
+        @foreach (var p in post)
+            {
+            <p>
+                <span class=" badge pull-right">@p.Likeds.Count()</span>
+                <a href="/post/details/@p.Id"><i class="fa fa-folder" aria-hidden="true"></i> @p.Title</a>
+            </p>
+        }
+    </div>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <strong>Mạng xã hội</strong>
+    </div>
+    <div class="panel-body">
+        <div class="fb-page" data-href="https://www.facebook.com/rigenled.lighting/" data-tabs="timeline" data-height="400" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/rigenled.lighting/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/rigenled.lighting/">Rigen Led Lighting</a></blockquote></div>
+    </div>
+</div>

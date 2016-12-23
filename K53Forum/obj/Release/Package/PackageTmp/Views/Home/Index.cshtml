@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+}
+@model PagedList.IPagedList<K53Forum.Models.Post>
+@using PagedList.Mvc;
+
+@section scripts{
+    }
+<div class="col-md-9">
+    @{ Html.RenderAction("_Carousel", "Home", null);}
+    <div class="panel panel-primary m-t-20">
+        <div class="panel-heading">
+            <strong> Các cuộc thảo luận mới nhất</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-hover">
+                <tbody>
+                    @foreach (var p in Model)
+                    {
+                        <tr class="k53-pointer">
+                            <td class="hidden-xs" style="width:80px;">
+                                <img src="@p.Member.Avatar" class="img-responsive k53-border-left" style="height:50px" />
+                            </td>
+                            <td>
+                                <p class="k53-title">
+                                    <a href="/post/details/@p.Id">@p.Title</a>
+                                    @if (Membership.GetUser() != null && p.Member.Username == Membership.GetUser().UserName)
+                                    {
+                                       <small class="text-muted" style="font-size:15px"><a href="/post/edit/@p.Id"><i class="fa fa-edit k53-color-hover"></i></a></small>
+                                    }
+                                </p>
+                                @if (Membership.GetUser() != null)
+                                {
+                                    var username = Membership.GetUser().UserName;
+                                    var memberId = (new K53Forum.Models.DbK53Forum())
+                                        .Members.Where(x => x.Username == username)
+                                        .FirstOrDefault<K53Forum.Models.Member>().Id;
+                                    if (p.Likeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                                    {
+                                        <a class="liked" id="liked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Thích</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="k53-link liked" id="liked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Đã thích</a>
+                                    }
+                                }
+                                <i class="fa fa-thumbs-o-up" aria-hidden="true" id="likedCount-@p.Id"> @p.Likeds.Count().ToString()</i>
+
+                                @if (Membership.GetUser() != null)
+                                {
+                                    var username = Membership.GetUser().UserName;
+                                    var memberId = (new K53Forum.Models.DbK53Forum())
+                                        .Members.Where(x => x.Username == username)
+                                        .FirstOrDefault<K53Forum.Models.Member>().Id;
+                                    if (p.DisLikeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                                    {
+                                        <a class="disliked" id="disliked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Không thích</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="k53-link disliked" id="disliked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Đã không thích</a>
+                                    }
+                                }
+                                <i class="fa fa-thumbs-o-down" aria-hidden="true" id="dislikedCount-@p.Id"> @p.DisLikeds.Count().ToString()</i>
+                                <i class="fa fa-comments-o" aria-hidden="true"></i> @p.Comments.Count().ToString()
+                                <span class="text-muted"><i class="fa fa-user-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@p.MemberId">@p.Member.Fullname</a>,
+                                <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@p.DateCreated.</span>
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer text-center">
+            @Html.PagedListPager(Model, page => Url.Action("Index", "Home", new { page }))
+        </div>
+    </div>
+
+</div>
+<div class="col-md-3">
+    @{ Html.RenderAction("_MenuBar", "Home", null);}
+</div>

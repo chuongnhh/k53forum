@@ -1,0 +1,166 @@
+﻿html{
+    height:100%;
+}
+body {
+    padding-top: 50px;
+    /*padding-bottom: 20px;*/
+    /*background-color:#f8f8f8;*/
+    height:100%;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    /*padding-left: 15px;
+    padding-right: 15px;*/
+    min-height:100%;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    border-radius:0px !important;
+}
+select {
+    border-radius: 0px !important;
+}
+.k53-color-hover:hover {
+    /*text-decoration:underline !important;*/
+    color: #29797c;
+} 
+.m-t-20 {
+    margin-top: 20px;
+}
+.p-t-10{
+    padding-top:10px;
+}
+.p-t-20 {
+    padding-top: 20px;
+}
+
+.k53-title{
+    font-size:18px;
+    padding:0;
+    margin:0;
+}
+.k53-title a{
+    color:#000000;
+}
+
+.k53-box {
+    /*box-shadow: 0px 1px 1px 1px #d7d7d7;*/
+    border-bottom-width:thin;
+    border-bottom: solid #dedede;
+    border-radius: 0px;
+}
+.k53-border-left {
+    border-bottom-width: thick;
+    border-bottom: solid #dedede;
+}
+.panel {
+    border-radius: 0px !important;
+}
+.panel-heading {
+    border-radius: 0px !important;
+}
+
+.box-body{
+    background-color:#ffffff;
+}
+.box-content {
+    background-color: #ffffff;
+}
+
+.carousel-indicators {
+    border-radius: 0px !important;
+}
+
+.modal {
+    border-radius: 0px !important;
+}
+
+.btn {
+    border-radius: 0px;
+}
+.navbar-toggle {
+    border-radius: 0px;
+}
+
+input {
+    border-radius: 0px !important;
+}
+.pagination a {
+    border-radius: 0px !important;
+}
+.panel a:link {
+    text-decoration: none !important;
+}
+.panel a:hover {
+    text-decoration: underline !important;
+}
+blockquote {
+    padding-top: 10px !important;
+    padding-bottom: 0px;
+    margin-top: 5px !important;
+    margin-bottom: 2px !important;
+    font-size: 14px;
+}
+.k53-pointer{
+    cursor:pointer;
+}
+
+.pagination-container{
+    margin:0px !important;
+    padding:0px !important;
+}
+.pagination {
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.modal-content {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+
+.modal-header {
+    /*background-color: #7bf6d8;*/
+}
+
+hr {
+    margin-top: 10px !important;
+    margin-bottom:0px !important;
+}
+h2 {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+}
+
+h1 {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.k53-link{
+    color:#32ac99;
+}
+.p-b-10{
+    padding-bottom:20px;
+}
+
+.carousel-inner > .item {
+    -webkit-transition: 0.5s ease-in-out left;
+    -moz-transition: 0.5s ease-in-out left;
+    -o-transition: 0.5s ease-in-out left;
+    transition: 0.5s ease-in-out left;
+}

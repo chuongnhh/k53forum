@@ -1,0 +1,42 @@
+﻿@model IEnumerable<K53Forum.Models.Member>
+
+
+@{
+    ViewBag.Title = "Danh sách thành viên";
+}
+
+@*@using PagedList.Mvc;*@
+
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <strong>@ViewBag.Title</strong>
+        </div>
+        <div class="panel-body">
+            <table class="table table-responsive table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Tài khoản</th>
+                        <th>Họ tên</th>
+                        <th>Ngày tham gia</th>
+                        <th>Bài viết</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var m in Model)
+                    {
+                        <tr>
+                            <td><a href="/member/details/@m.Id">@m.Username</a></td>
+                            <td>@m.Fullname</td>
+                            <td>@m.DateCreated</td>
+                            <td>@m.Posts.Count().ToString("00")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @*<div class="panel-footer text-center">
+                @Html.PagedListPager(Model, page => Url.Action("Member", "Home", new { page }))
+            </div>*@
+    </div>
+</div>

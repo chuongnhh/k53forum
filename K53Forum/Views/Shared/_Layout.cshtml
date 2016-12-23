@@ -1,0 +1,78 @@
+﻿
+
+@using K53Forum.CodeHelper;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/favicon.ico" rel="shortcut icon">
+    <title>@ViewBag.Title - K53 Forum</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/showup")
+    @*@Styles.Render("~/Content/animate")*@
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @*@Html.ActionLink("K53 Forum", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                <a href="@Url.Action("index", "home")" class="navbar-brand"><i class="fa fa-twitch" aria-hidden="true"></i> K53 Forum</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="@(CurrentAction.currentAction == "home" ? "active" : "")">@Html.ActionLink("Diễn đàn", "index", "home")</li>
+                    <li class="@(CurrentAction.currentAction == "about" ? "active" : "")">@Html.ActionLink("Giới thiệu", "about", "home")</li>
+                    @if (Membership.GetUser() != null)
+                    {
+                        <li class="@(CurrentAction.currentAction == "member" ? "active" : "")">@Html.ActionLink("Thành viên", "index", "member")</li>
+                    }
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{ Html.RenderAction("_MemberLogin", "home", null);}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content box-content k53-box">
+        <div class="row p-t-20">
+            @RenderBody()
+        </div>
+        <footer class="modal-footer" style="margin:0px">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="pull-left">&copy; @DateTime.Now.Year - <a target="_blank" href="https://www.facebook.com/chuongnh.hcm">Nguyen Hoang Chuong. </a>Allright reserved.</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="pull-right">
+                        <a href="#"><i class="fa fa-facebook-square" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-google-plus-square" aria-hidden="true"></i></a>
+                        <a href="#"><i class="fa fa-twitter-square" aria-hidden="true"></i></a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    @Html.Partial("_LoginModal")
+    @Html.Partial("_RegisterModal")
+    @RenderPage("_BackToTop.cshtml")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/website")
+    @Scripts.Render("~/bundles/showup")
+    @Scripts.Render("~/bundles/theme")
+    @Scripts.Render("~/bundles/notify")
+    @Scripts.Render("~/bundles/controller")
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

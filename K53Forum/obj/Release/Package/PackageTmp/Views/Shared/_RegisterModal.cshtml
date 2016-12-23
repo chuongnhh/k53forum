@@ -1,0 +1,46 @@
+﻿@*@model K53Forum.Models.Member*@
+
+@using (Html.BeginForm("create", "member", FormMethod.Post, new { id = "form-register" }))
+{
+    @Html.AntiForgeryToken()
+    <!-- Modal -->
+    <div class="modal fade" id="register-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Đăng ký thành viên</h4>
+                </div>
+                <div class="modal-body">
+                    <fieldset class="form-group">
+                        <p id="register-fail" style="color:red"></p>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="Username">Tên tài khoản</label>
+                        <input type="text" class="form-control" id="Username" name="Username" required="" placeholder="Tên tài khoản">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="Password">Mật khẩu</label>
+                        <input type="password" class="form-control" id="Password" name="Password" required="" placeholder="Mật khẩu">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="ComfirmPassword">Xác nhận mật khẩu</label>
+                        <input type="password" class="form-control" id="ComfirmPassword" name="ComfirmPassword" required="" placeholder="Xác nhận mật khẩu">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="Fullname">Tên của bạn</label>
+                        <input type="text" class="form-control" id="Fullname" name="Fullname" required="" placeholder="Tên của bạn">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="Email">Địa chỉ mail</label>
+                        <input type="email" class="form-control" id="Email" name="Email" required="" placeholder="Địa chỉ mail">
+                    </fieldset>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-user-plus" aria-hidden="true"></i> Đăng ký</button>
+                    <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-remove" aria-hidden="true"></i> Hủy</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

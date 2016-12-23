@@ -1,0 +1,117 @@
+﻿@model K53Forum.Models.Member
+
+@{
+    ViewBag.Title = Model.Fullname;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section scripts{
+    <script>
+        function upload() {
+            document.getElementById("avatar").click();
+        }
+        function submitform() {
+
+            $('#form-change-avatar').submit();
+        }
+        $(function () {
+            $('#form-change-avatar').submit(function (e) {
+                e.preventDefault();
+
+
+                var action = $(this).attr('action');
+                var method = $(this).attr('method');
+                var data = new FormData(); //FormData object
+                var fileInput = document.getElementById('avatar');
+                //Iterating through each files selected in fileInput
+                for (i = 0; i < fileInput.files.length; i++) {
+                    //Appending each file to FormData object
+                    data.append(fileInput.files[i].name, fileInput.files[i]);
+                }
+                
+                $.ajax({
+                    url: action,
+                    method: method,
+                    xhr: function () {  // Custom XMLHttpRequest
+                        var xhr = new XMLHttpRequest();
+                        xhr.open(method, action);
+                        xhr.send(data);
+                    },
+                    processData: false,
+                    data: data,
+                    success: function (data) {
+                        alert(data.serverPath);
+                    },
+                    error: function (err) {
+                        alert('error');
+                    }
+                })
+
+                //Creating an XMLHttpRequest and sending
+                //var xhr = new XMLHttpRequest();
+                //xhr.open('POST', '/member/ChangeAvatar');
+                //xhr.send(formdata);
+                //xhr.onreadystatechange = function () {
+                //    if (xhr.readyState == 4 && xhr.status == 200) {
+                //        alert(xhr.responseText);
+                //    }
+                //}
+                //return false;
+            })
+        })
+    </script>
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Thành viên "<strong>@Model.Fullname</strong>"
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="text-center">
+                        <img src="@Model.Avatar" class="img-responsive" onclick="upload()" />
+                    </div>
+                    <div class="p-t-20">
+                        @if (Membership.GetUser() != null && Membership.GetUser().UserName == Model.Username)
+                        {
+                            <a href="/member/edit/@Model.Id" class="btn btn-primary btn-block"><i class="fa fa-edit" aria-hidden="true"></i> Chỉnh sửa</a>
+                        }
+                        else
+                        {
+                            <a href="/member/report/@Model.Id" class="btn btn-default btn-block"><i class="fa fa-frown-o" aria-hidden="true"></i> Báo cáo</a>
+                        }
+                        @using (Html.BeginForm("ChangeAvatar", "Member", FormMethod.Post, new { @id = "form-change-avatar", @enctype = "multipart/form-data" }))
+                        {
+                            <div class="form-group">
+                                <input id="avatar" name="avatar" class="form-control" type="file" style="visibility:hidden" onchange="submitform()" />
+                                <input id="@Model.Id" name="@Model.Id" class="form-control" type="text" style="visibility:hidden" />
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <p class="k53-title">@Model.Fullname</p>
+                    <p>@Html.DisplayNameFor(model => model.Role.RoleName): @Model.Role.RoleName</p>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>@Html.DisplayNameFor(model => model.Gender): @Model.Gender</p>
+                            <p>@Html.DisplayNameFor(model => model.Birthday): @Model.Birthday.ToString("dd/MM/yyyy")</p>
+                            <p>@Html.DisplayNameFor(model => model.DateCreated): @Model.DateCreated</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p>@Html.DisplayNameFor(model => model.Email): @Model.Email</p>
+                            <p>@Html.DisplayNameFor(model => model.Phone): @Model.Phone</p>
+                            <p>Số lượng bài viết: @Model.Posts.Count().ToString("00")</p>
+                        </div>
+                        <div class="col-md-12">
+                            <p>@Html.DisplayNameFor(model => model.Address): @Model.Address</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

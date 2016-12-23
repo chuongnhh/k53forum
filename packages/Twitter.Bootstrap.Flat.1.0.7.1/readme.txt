@@ -1,0 +1,1 @@
+﻿This is an older release of Bootstrap Flat and has been deprecated. Please uninstall this package and install the package at https://www.nuget.org/packages/Bootstrap.Flat instead.

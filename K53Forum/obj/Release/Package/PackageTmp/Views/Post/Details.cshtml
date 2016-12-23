@@ -1,0 +1,256 @@
+﻿@model K53Forum.Models.Post
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+
+    <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/summernote/summernote.min.js"></script>
+    <script>
+        $('#Commented').summernote({
+            height: 80,                 // set editor height
+            //minHeight: null,             // set minimum height of editor
+            //maxHeight: null,             // set maximum height of editor
+            focus: false,                // set focus to editable area after initializing summernote
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['picture', ['picture']],
+                ['codeview', ['codeview']]
+            ]
+        });
+    </script>
+}
+
+<div class="col-md-9">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <strong>@Model.Title</strong>
+        </div>
+        <div class="panel-body">
+            @*<p class="k53-title">@Model.Title</p>*@
+            <h1>@Model.Title</h1>
+            <small>
+                @if (Membership.GetUser() != null && Model.Member.Username == Membership.GetUser().UserName)
+                {
+                    <a href="/post/edit/@Model.Id"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+                }
+                <span class="text-muted"><i class="fa fa-user-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/Member/Details/@Model.MemberId">@Model.Member.Fullname</a>,
+                <a href="/Category/Details/@Model.CatagoryId">@Model.Category.Name</a>
+                <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@Model.DateCreated</span>
+                <span class="text-muted">
+                </span>
+            </small><hr />
+            <div class="p-t-10">@(Html.Raw(Model.Content))</div>
+            <small>
+                <span>
+                    @if (Membership.GetUser() != null)
+                    {
+                        var username = Membership.GetUser().UserName;
+                        var memberId = (new K53Forum.Models.DbK53Forum())
+                            .Members.Where(x => x.Username == username)
+                            .FirstOrDefault<K53Forum.Models.Member>().Id;
+                        if (Model.Likeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                        {
+                            <a class="liked" id="liked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Thích</a>
+                        }
+                        else
+                        {
+                            <a class="k53-link liked" id="liked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Đã thích</a>
+                        }
+                    }
+                    <i class="fa fa-thumbs-o-up" aria-hidden="true" id="likedCount-@Model.Id"> @Model.Likeds.Count().ToString()</i>
+
+                    @if (Membership.GetUser() != null)
+                    {
+                        var username = Membership.GetUser().UserName;
+                        var memberId = (new K53Forum.Models.DbK53Forum())
+                            .Members.Where(x => x.Username == username)
+                            .FirstOrDefault<K53Forum.Models.Member>().Id;
+                        if (Model.DisLikeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                        {
+                            <a class="disliked" id="disliked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Không thích</a>
+                        }
+                        else
+                        {
+                            <a class="k53-link disliked" id="disliked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Đã không thích</a>
+                        }
+                    }
+                    <i class="fa fa-thumbs-o-down" aria-hidden="true" id="dislikedCount-@Model.Id"> @Model.DisLikeds.Count().ToString()</i>
+
+                    @if (Membership.GetUser() != null)
+                    {
+                        var username = Membership.GetUser().UserName;
+                        var memberId = (new K53Forum.Models.DbK53Forum())
+                            .Members.Where(x => x.Username == username)
+                            .FirstOrDefault<K53Forum.Models.Member>().Id;
+                        if (Model.Comments.Where(x => x.MemberId == memberId).FirstOrDefault() != null)
+                        {
+                            <a id="commented" data-key="@Model.Id" href="javascript:void(0);"> Bình luận</a>
+                        }
+                        else
+                        {
+                            <a id="commented" data-key="@Model.Id" href="javascript:void(0);" class="k53-link"> Bình luận</a>
+                        }
+                    }
+                    <i class="fa fa-comments-o" aria-hidden="true"> @Model.Comments.Count().ToString()</i>
+                </span>
+            </small>
+            <hr />
+            @foreach (var c in Model.Comments)
+            {
+                <blockquote>
+                    <a href="/member/details/@c.MemberId">@c.Member.Fullname</a>
+                    <small><i class="fa fa-calendar-o"></i>@c.DateCreated</small>
+                    <span>@(Html.Raw(c.Content))</span>
+                    <small>
+                        <span>
+                            @if (Membership.GetUser() != null)
+                            {
+                                var username = Membership.GetUser().UserName;
+                                var memberId = (new K53Forum.Models.DbK53Forum())
+                                    .Members.Where(x => x.Username == username)
+                                    .FirstOrDefault<K53Forum.Models.Member>().Id;
+                                if (Model.Likeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                                {
+                                    <a class="liked" id="liked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Thích</a>
+                                }
+                                else
+                                {
+                                    <a class="k53-link liked" id="liked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Đã thích</a>
+                                }
+                            }
+                            <i class="fa fa-thumbs-o-up" aria-hidden="true" id="likedCount-@Model.Id"> @Model.Likeds.Count().ToString()</i>
+
+                            @if (Membership.GetUser() != null)
+                            {
+                                var username = Membership.GetUser().UserName;
+                                var memberId = (new K53Forum.Models.DbK53Forum())
+                                    .Members.Where(x => x.Username == username)
+                                    .FirstOrDefault<K53Forum.Models.Member>().Id;
+                                if (Model.DisLikeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                                {
+                                    <a class="disliked" id="disliked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Không thích</a>
+                                }
+                                else
+                                {
+                                    <a class="k53-link disliked" id="disliked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Đã không thích</a>
+                                }
+                            }
+                            <i class="fa fa-thumbs-o-up" aria-hidden="true" id="dislikedCount-@Model.Id"> @Model.DisLikeds.Count().ToString()</i>
+
+                            @if (Membership.GetUser() != null)
+                            {
+                                var username = Membership.GetUser().UserName;
+                                var memberId = (new K53Forum.Models.DbK53Forum())
+                                    .Members.Where(x => x.Username == username)
+                                    .FirstOrDefault<K53Forum.Models.Member>().Id;
+                                if (Model.Comments.Where(x => x.MemberId == memberId).FirstOrDefault() != null)
+                                {
+                                    <a id="commented" data-key="@Model.Id" href="javascript:void(0);"> Bình luận</a>
+                                }
+                                else
+                                {
+                                    <a id="commented" data-key="@Model.Id" href="javascript:void(0);" class="k53-link"> Bình luận</a>
+                                }
+                            }
+                            <i class="fa fa-comments-o" aria-hidden="true"> @Model.Comments.Count().ToString()</i>
+                            <i class="fa fa-comments-o" aria-hidden="true"> @c.Replies.Count().ToString()</i>
+                        </span>
+                    </small>
+
+                    @foreach (var r in c.Replies)
+                    {
+                        <blockquote>
+                            <a href="/member/details/@r.MemberId">@r.Member.Fullname</a>
+                            <small><i class="fa fa-calendar-o"></i>@r.DateCreated</small>
+                            <span>@(Html.Raw(r.Content))</span>
+                            <small>
+                                <span>
+                                    @if (Membership.GetUser() != null)
+                                    {
+                                        var username = Membership.GetUser().UserName;
+                                        var memberId = (new K53Forum.Models.DbK53Forum())
+                                            .Members.Where(x => x.Username == username)
+                                            .FirstOrDefault<K53Forum.Models.Member>().Id;
+                                        if (Model.Likeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                                        {
+                                            <a id="liked" data-key="@Model.Id" href="javascript:void(0);"> Thích</a>
+                                        }
+                                        else
+                                        {
+                                            <a id="liked" data-key="@Model.Id" href="javascript:void(0);" class="k53-link"> Đã thích</a>
+                                        }
+                                    }
+                                    <i class="fa fa-thumbs-o-up" aria-hidden="true" id="likedCount"> @Model.Likeds.Count().ToString()</i>
+
+                                    @if (Membership.GetUser() != null)
+                                    {
+                                        var username = Membership.GetUser().UserName;
+                                        var memberId = (new K53Forum.Models.DbK53Forum())
+                                            .Members.Where(x => x.Username == username)
+                                            .FirstOrDefault<K53Forum.Models.Member>().Id;
+                                        if (Model.DisLikeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                                        {
+                                            <a id="disliked" data-key="@Model.Id" href="javascript:void(0);"> Không thích</a>
+                                        }
+                                        else
+                                        {
+                                            <a id="disliked" data-key="@Model.Id" href="javascript:void(0);" class="k53-link"> Đã không thích</a>
+                                        }
+                                    }
+                                    <i class="fa fa-thumbs-o-up" aria-hidden="true" id="dislikedCount"> @Model.DisLikeds.Count().ToString()</i>
+
+                                </span>
+                            </small>
+                        </blockquote>
+                    }
+                    @if (Membership.GetUser() != null)
+                    {
+                        using (Html.BeginForm("replied", "post", FormMethod.Post))
+                        {
+                            <div class="input-group">
+                                <input type="hidden" class="form-control" id="id" name="id" value="@Model.Id" />
+                                <input type="hidden" class="form-control" id="commentId" name="commentId" value="@c.Id" />
+                                <input type="text" class="form-control input-sm" id="replied" name="replied" placeholder="Viết trả lời" aria-describedby="reply">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default btn-sm" id="reply"><i class="fa fa-send-o"></i></button>
+                                </span>
+                            </div>
+                        }
+                    }
+                </blockquote>
+            }
+            @if (Membership.GetUser() != null)
+            {
+                using (Html.BeginForm("commented", "post", FormMethod.Post, new { id = "form-commented" }))
+                {
+                    <fieldset class="form-group">
+                        <input type="hidden" class="form-control" id="Id" name="Id" value="@Model.Id" />
+                        <textarea class="form-control" data-PostId="@Model.Id" id="Commented" name="Commented"></textarea>
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-send-o"></i> Gửi bình luận</button>
+                    </fieldset>
+                }
+            }
+        </div>
+    </div>
+
+</div>
+
+<div class="col-md-3">
+    @{ Html.RenderAction("_MenuBar", "Home", null);}
+</div>
