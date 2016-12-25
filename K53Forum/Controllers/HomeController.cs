@@ -15,45 +15,40 @@ namespace K53Forum.Controllers
     {
         DbK53Forum db = new DbK53Forum();
 
-        public ActionResult Index(int? page)
+        public ActionResult Index()
         {
-            var model = db.Posts.OrderByDescending(x => x.Id).ToList<Post>();
+            var model = db.Articles.OrderByDescending(x => x.Id).Take(10).ToList<Article>();
 
             CurrentAction.currentAction = "home";
 
-            int pageSize = 20;
-            int pageNumber = (page ?? 1);
+            //int pageSize = 20;
+            //int pageNumber = (page ?? 1);
 
-            return View(model.ToPagedList(pageNumber, pageSize));
-        }
-
-        public ActionResult About()
-        {
-            CurrentAction.currentAction = "about";
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Term()
-        {
-            CurrentAction.currentAction = "term";
-            ViewBag.Message = "Term in forum";
-
-            return View();
+            //return View(model.ToPagedList(pageNumber, pageSize));
+            return View(model);
         }
 
         [ChildActionOnly]
         public ActionResult _Carousel()
         {
-            return PartialView();
+            var model = db.Carousels
+                .OrderByDescending(x => x.Id)
+                .ToList<Carousel>();
+            return PartialView(model);
         }
 
         [ChildActionOnly]
         public ActionResult _MenuBar()
         {
-            ViewBag.Category = db.Categories.OrderByDescending(x => x.Id).ToList<Category>();
-            ViewBag.Post = db.Posts.OrderByDescending(x => x.Id).ToList<Post>();
+            ViewBag.Categories = db.Categories.OrderByDescending(x => x.Id).Take(10).ToList<Category>();
+            ViewBag.Articles = db.Articles.OrderByDescending(x => x.Id).Take(10).ToList<Article>();
+            ViewBag.Discussions = db.Discussions.OrderByDescending(x => x.Id).Take(10).ToList<Discussion>();
+            ViewBag.Tutorials = db.Tutorials.OrderByDescending(x => x.Id).Take(10).ToList<Tutorial>();
+
+            ViewBag.Members = db.Members
+                .OrderByDescending(x => x.Articles.Count() + x.Tutorials.Count() + x.Discussions.Count())
+                .Take(10).ToList<Member>();
+
             ViewBag.Count = db.Categories.OrderByDescending(x => x.Id).Count().ToString();
             return PartialView();
         }
@@ -64,12 +59,15 @@ namespace K53Forum.Controllers
             if (Membership.ValidateUser(username, password))
             {
                 FormsAuthentication.SetAuthCookie(username, false);
-                //Uri url = Request.Url;
-                //return Redirect(url.ToString());
-                return Json(new { status = true,
+
+
+                return Json(new
+                {
+                    status = true,
                     name = db.Members
                     .Where(x => x.Username == username)
-                    .FirstOrDefault().Username });
+                    .FirstOrDefault().Username
+                });
             }
             else
             {

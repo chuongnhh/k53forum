@@ -1,0 +1,42 @@
+﻿@model K53Forum.Models.Member
+
+@{
+    ViewBag.Title = Model.Fullname;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="page-header">
+        <h3>Thông tin "<strong>@Model.Fullname</strong>"</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="text-center">
+                <img src="@Model.Avatar" class="img-responsive" />
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header" style="margin-top:0px;">
+                <h3>@Model.Fullname</h3>
+                <small>@Html.DisplayNameFor(model => model.Role.RoleName): @Model.Role.RoleName</small>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>@Html.DisplayNameFor(model => model.Gender): @Model.Gender</p>
+                    <p>@Html.DisplayNameFor(model => model.Birthday): @Model.Birthday.ToString("dd/MM/yyyy")</p>
+                    <p>@Html.DisplayNameFor(model => model.DateCreated): @Model.DateCreated</p>
+                    <p>@Html.DisplayNameFor(model => model.Email): @Model.Email</p>
+                    <p>@Html.DisplayNameFor(model => model.Phone): @Model.Phone</p>
+                </div>
+                <div class="col-md-6">
+                    <p>@Html.DisplayNameFor(model => model.Phone): @Model.Phone</p>
+                </div>
+                <div class="col-md-12">
+                    <p>@Html.DisplayNameFor(model => model.Address): @Model.Address</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/admin/member/edit/@Model.Id" class="btn btn-primary"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+    <a href="/admin/member/index" class="btn btn-default"><i class="fa fa-reply"></i> Trở về trang chủ</a>
+</div>

@@ -12,7 +12,9 @@ namespace K53Forum.Models
     {
         public Category()
         {
-            Posts = new List<Post>();
+            Articles = new List<Article>();
+            Tutorials = new List<Tutorial>();
+            Discussions = new List<Discussion>();
             DateCreated = DateTime.Now;
         }
         [Key]
@@ -25,7 +27,8 @@ namespace K53Forum.Models
         [Display(Name = "Ngày khởi tạo")]
         public DateTime DateCreated { get; set; }
 
-        [Display(Name = "Danh sách bài viết")]
-        public virtual List<Post> Posts { get; set; }
+        public virtual List<Article> Articles { get; set; }
+        public virtual List<Tutorial> Tutorials { get; set; }
+        public virtual List<Discussion> Discussions { get; set; }
     }
 }

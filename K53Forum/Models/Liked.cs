@@ -16,11 +16,11 @@ namespace K53Forum.Models
         }
         [Column(Order = 1),Key, ForeignKey("Member")]
         public long MemberId { get; set; }
-        [Column(Order = 2), Key, ForeignKey("Post")]
-        public long PostId { get; set; }
+        [Column(Order = 2), Key, ForeignKey("Article")]
+        public long ArticleId { get; set; }
         public DateTime DateCreated { get; set; }
 
         public virtual Member Member { get; set; }
-        public virtual Post Post { get; set; }
+        public virtual Article Article { get; set; }
     }
 }

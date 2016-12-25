@@ -1,0 +1,65 @@
+﻿@model K53Forum.Models.Article
+
+@{
+    ViewBag.Title = "Tạo bài viết";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+
+    <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+}
+@section scripts{
+
+    <script src="~/Scripts/summernote/summernote.min.js"></script>
+    <script>
+        $('#Content').summernote({
+            height: 300,                 // set editor height
+            minHeight: null,             // set minimum height of editor
+            maxHeight: null,             // set maximum height of editor
+            focus: true                  // set focus to editable area after initializing summernote
+        });
+    </script>
+}
+
+<div class="col-md-12">
+    <div class="page-header">
+        <h3>Tạo bài viết</h3>
+    </div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <fieldset class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-12">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </fieldset>
+
+        <fieldset class="form-group">
+            @Html.LabelFor(model => model.CatagoryId, "Chuyên mục", htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-12">
+                @Html.DropDownList("CatagoryId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CatagoryId, "", new { @class = "text-danger" })
+            </div>
+        </fieldset>
+
+        <fieldset class="form-group">
+            @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-12" })
+            <div class="col-md-12">
+                @Html.TextAreaFor(model => model.Content,  new { @class = "form-control"  })
+                @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
+            </div>
+        </fieldset>
+
+        <fieldset class="form-group">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Tạo bài viết</button>
+                <a href="/admin/article/index" class="btn btn-default">Hủy</a>
+            </div>
+        </fieldset>
+    }
+</div>
+

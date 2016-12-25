@@ -6,80 +6,105 @@
 }
 
 
-<div class="col-md-9">
+<div class="col-md-8">
+    <div class="page-header">
+        <h2>Tất cả chuyên mục</h2>
+    </div>
     @foreach (var c in Model)
     {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Chuyên mục "<strong>@c.Name</strong>"
-            </div>
-            <div class="panel-body">
-                <table class="table table-hover">
-                    <tbody>
-                        @foreach (var p in c.Posts)
+        foreach (var a in c.Articles)
+        {
+            <div class="media">
+                <div class="media-left hidden-xs">
+                    <a href="/member/details/@a.MemberId">
+                        <img class="media-object k53-media" src="@a.Member.Avatar" alt="@a.Member.Avatar" style="max-width:50px">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="/article/details/@a.Id">@a.Title</a>
+                        <small class="text-muted" style="font-size:15px"><a href="/article/edit/@a.Id"><i class="fa fa-edit k53-color-hover"></i></a></small>
+                    </h4>
+                    <small>
+                        @if (Membership.GetUser() != null)
                         {
-                            <tr class="k53-pointer">
-                                <td class="hidden-xs" style="width:80px;">
-                                    <img src="@p.Member.Avatar" class="img-responsive k53-border-left" style="height:50px" />
-                                </td>
-                                <td>
-                                    <p class="k53-title">
-                                        <a href="/post/details/@p.Id">@p.Title</a>
-                                        @if (Membership.GetUser() != null && p.Member.Username == Membership.GetUser().UserName)
-                                        {
-                                            <small class="text-muted" style="font-size:15px"><a href="/post/edit/@p.Id"><i class="fa fa-edit k53-color-hover"></i></a></small>
-                                        }
-                                    </p>
-                                    @if (Membership.GetUser() != null)
-                                    {
-                                        var username = Membership.GetUser().UserName;
-                                        var memberId = (new K53Forum.Models.DbK53Forum())
-                                            .Members.Where(x => x.Username == username)
-                                            .FirstOrDefault<K53Forum.Models.Member>().Id;
-                                        if (p.Likeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
-                                        {
-                                            <a class="liked" id="liked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Thích</a>
-                                        }
-                                        else
-                                        {
-                                            <a class="k53-link liked" id="liked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Đã thích</a>
-                                        }
-                                    }
-                                    <i class="fa fa-thumbs-o-up" aria-hidden="true" id="likedCount-@p.Id"> @p.Likeds.Count().ToString()</i>
-
-                                    @if (Membership.GetUser() != null)
-                                    {
-                                        var username = Membership.GetUser().UserName;
-                                        var memberId = (new K53Forum.Models.DbK53Forum())
-                                            .Members.Where(x => x.Username == username)
-                                            .FirstOrDefault<K53Forum.Models.Member>().Id;
-                                        if (p.DisLikeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
-                                        {
-                                            <a class="disliked" id="disliked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Không thích</a>
-                                        }
-                                        else
-                                        {
-                                            <a class="k53-link disliked" id="disliked-@p.Id" data-key="@p.Id" href="javascript:void(0);"> Đã không thích</a>
-                                        }
-                                    }
-                                    <i class="fa fa-thumbs-o-down" aria-hidden="true" id="dislikedCount-@p.Id"> @p.DisLikeds.Count().ToString()</i>
-                                    <i class="fa fa-comments-o" aria-hidden="true"></i> @p.Comments.Count().ToString()
-                                    <span class="text-muted"><i class="fa fa-user-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@p.MemberId">@p.Member.Fullname</a>,
-                                    <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@p.DateCreated.</span>
-
-                                </td>
-                            </tr>
+                            var username = Membership.GetUser().UserName;
+                            var memberId = (new K53Forum.Models.DbK53Forum())
+                                .Members.Where(x => x.Username == username)
+                                .FirstOrDefault<K53Forum.Models.Member>().Id;
+                            if (a.Likeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                            {
+                                <a class="liked" id="liked-@a.Id" data-key="@a.Id" href="javascript:void(0);"> Thích</a>
+                            }
+                            else
+                            {
+                                <a class="k53-link liked" id="liked-@a.Id" data-key="@a.Id" href="javascript:void(0);"> Đã thích</a>
+                            }
                         }
-                    </tbody>
-                </table>
-            </div>
-            <div class="panel-footer text-center">
+                        <i class="fa fa-thumbs-o-up" aria-hidden="true" id="likedCount-@a.Id"> @a.Likeds.Count().ToString()</i>
 
+                        <i class="fa fa-eye" aria-hidden="true" id=""> @a.Count</i>
+                        <i class="fa fa-comments-o" aria-hidden="true"></i> @a.Comments.Count().ToString()
+                        <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@a.MemberId">@a.Member.Fullname</a>,
+                        <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@a.DateCreated.</span>
+                    </small><br />
+                    @(Html.Raw(a.Content.Substring(0, a.Content.Length >= 500 ? 500 : a.Content.Length)))...
+                </div>
             </div>
-        </div>
+
+            <hr />
+        }
+        foreach (var t in c.Tutorials)
+        {
+            <div class="media">
+                <div class="media-left hidden-xs">
+                    <a href="/member/details/@t.MemberId">
+                        <img class="media-object k53-media" src="@t.Member.Avatar" alt="@t.Member.Avatar" style="max-width:50px">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="/article/details/@t.Id">@t.Title</a>
+                        <small class="text-muted" style="font-size:15px"><a href="/article/edit/@t.Id"><i class="fa fa-edit k53-color-hover"></i></a></small>
+                    </h4>
+                    <small>
+                        <i class="fa fa-eye" aria-hidden="true" id=""> @t.Count</i>
+                        <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@t.MemberId">@t.Member.Fullname</a>,
+                        <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@t.DateCreated.</span>
+                    </small><br />
+                    @(Html.Raw(t.Content.Substring(0, t.Content.Length >= 500 ? 500 : t.Content.Length)))...
+                </div>
+            </div>
+
+            <hr />
+        }
+        foreach (var d in c.Discussions)
+        {
+            <div class="media">
+                <div class="media-left hidden-xs">
+                    <a href="/member/details/@d.MemberId">
+                        <img class="media-object k53-media" src="@d.Member.Avatar" alt="@d.Member.Avatar" style="max-width:50px">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">
+                        <a href="/article/details/@d.Id">@d.Title</a>
+                        <small class="text-muted" style="font-size:15px"><a href="/article/edit/@d.Id"><i class="fa fa-edit k53-color-hover"></i></a></small>
+                    </h4>
+                    <small>
+                        <i class="fa fa-eye" aria-hidden="true" id=""> @d.Count</i>
+                        <i class="fa fa-comment-o" aria-hidden="true" id=""> @d.Replies.Count()</i>
+                        <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@d.MemberId">@d.Member.Fullname</a>,
+                        <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@d.DateCreated.</span>
+                    </small><br />
+                    @(Html.Raw(d.Content.Substring(0, d.Content.Length >= 500 ? 500 : d.Content.Length)))...
+                </div>
+            </div>
+
+            <hr />
+        }
     }
-
 </div>
-<div class="col-md-3">
+<div class="col-md-4">
     @{ Html.RenderAction("_MenuBar", "Home", null);}
 </div>

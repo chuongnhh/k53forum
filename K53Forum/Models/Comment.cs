@@ -14,14 +14,15 @@ namespace K53Forum.Models
         public Comment()
         {
             DateCreated = DateTime.Now;
-            Replies = new List<Reply>();
         }
         [Key]
         [Display(Name = "Mã")]
         public long Id { get; set; }
+
         [Display(Name = "Nội dung")]
         [AllowHtml]
         public string Content { get; set; }
+
         [Display(Name = "Ngày bình luận")]
         public DateTime DateCreated { get; set; }
 
@@ -34,12 +35,9 @@ namespace K53Forum.Models
         public long PostId { get; set; }
 
         [Display(Name = "Bài viết")]
-        public virtual Post Post { get; set; }
+        public virtual Article Post { get; set; }
 
         [Display(Name = "Thành viên")]
         public virtual Member Member { get; set; }
-
-        [Display(Name = "Trả lời")]
-        public virtual List<Reply> Replies { get; set; }
     }
 }

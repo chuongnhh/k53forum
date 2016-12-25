@@ -1,0 +1,30 @@
+﻿@model K53Forum.Models.Tutorial
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-8">
+    <div class="page-header">
+        <h1>@Model.Title</h1>
+        <small>
+            @*@if (Membership.GetUser() != null && Model.Member.Username == Membership.GetUser().UserName)
+            {
+                <a href="/tutorial/edit/@Model.Id"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+            }*@
+            <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@Model.MemberId">@Model.Member.Fullname</a>,
+            <a href="/category/details/@Model.CatagoryId">@Model.Category.Name</a>
+            <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@Model.DateCreated</span>
+            <span class="text-muted">
+            </span>
+        </small>
+
+    </div>
+    <div class="p-t-10">@(Html.Raw(Model.Content))</div>
+
+</div>
+
+<div class="col-md-4">
+    @{ Html.RenderAction("_MenuBar", "Home", null);}
+</div>

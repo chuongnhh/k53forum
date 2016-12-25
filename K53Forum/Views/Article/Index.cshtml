@@ -1,0 +1,67 @@
+﻿@model IEnumerable<K53Forum.Models.Article>
+
+@{
+    ViewBag.Title = "Bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Membership.GetUser() != null)
+{
+    <div class="col-md-12">
+
+        <div class="alert alert-success alert-dismissible page-header" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span>Bạn có ý tưởng hay, bạn có thông tin mới, bạn muốn chia sẽ hãy nhấn vào đây để </span>
+            <a href="/article/create" class="alert-link">viết bài</a>
+        </div>
+    </div>
+}
+<div class="col-md-8">
+    <h4 class="page-header"><strong>Tất cả bài viết</strong></h4>
+    @if (Model.Count() <= 0)
+    {
+        <div class="alert alert-success alert-dismissible page-header" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span>Chưa có bài viết nào. Vui lòng quay lại sau. Nhấn vào <a href="/home/index" class="alert-link">đây</a> để trở về <a href="/home/index" class="alert-link">trang chủ</a>.</span>
+
+        </div>
+    }
+    @foreach (var a in Model)
+    {
+        <div class="media">
+            <div class="media-left hidden-xs">
+                <a href="/member/details/@a.MemberId">
+                    <img class="media-object k53-media" src="@a.Member.Avatar" alt="@a.Member.Avatar" style="max-width:50px">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="/article/details/@a.Id">@a.Title</a>
+                    @if (Membership.GetUser() != null)
+                    {
+                        var username = Membership.GetUser().UserName;
+                        var memberId = (new K53Forum.Models.DbK53Forum())
+                            .Members.Where(x => x.Username == username)
+                            .FirstOrDefault<K53Forum.Models.Member>().Id;
+                        if (a.Member.Id == memberId)
+                        {
+                            <small class="text-muted" style="font-size:15px"><a href="/article/edit/@a.Id"><i class="fa fa-edit k53-color-hover"></i></a></small>
+                        }
+                    }
+                </h4>
+                <small>
+                    <i class="fa fa-eye" aria-hidden="true" id=""> @a.Count</i>
+                    <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@a.MemberId">@a.Member.Fullname</a>,
+                    <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@a.DateCreated.</span>
+                </small><br />
+                @(Html.Raw(a.Content.Substring(0, a.Content.Length >= 500 ? 500 : a.Content.Length)))...
+            </div>
+        </div>
+
+        <hr />
+    }
+    @*@Html.PagedListPager(Model, page => Url.Action("Index", "Home", new { page }))*@
+</div>
+<div class="col-md-4">
+    @{ Html.RenderAction("_MenuBar", "Home", null);}
+</div>

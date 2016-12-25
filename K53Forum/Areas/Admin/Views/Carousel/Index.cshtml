@@ -1,0 +1,66 @@
+﻿@model IEnumerable<K53Forum.Models.Carousel>
+
+@{
+    ViewBag.Title = "Danh sách carousel";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script src="~/Areas/Admin/Scripts/carouselController.js"></script>
+}
+<div class="col-md-12">
+    <div class="page-header">
+        <h3>Danh sách carousel</h3>
+    </div>
+    <p>
+        @Html.ActionLink("Tạo carousel mới", "create")
+    </p>
+    <table class="table table-hover table-responsive">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Content)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedBy)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateCreated)
+                </th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="carousel-@item.Id">
+                    <td>
+                        <img src="@item.Image" class="img-responsive" style="max-width:50px;" />
+                    </td>
+                    <td>
+                        @item.Title.Substring(0, item.Title.Length >= 20 ? 20 : item.Title.Length)...
+                    </td>
+                    <td>
+                        @item.Content.Substring(0, item.Content.Length >= 20 ? 20 : item.Content.Length)...
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCreated)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "edit", new { id = item.Id }) |
+                        @Html.ActionLink("Xem", "details", new { id = item.Id }) |
+                        @Html.ActionLink("Xóa", "delete", new { id = item.Id }, new { @class = "delete-carousel" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

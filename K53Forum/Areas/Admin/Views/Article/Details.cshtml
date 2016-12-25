@@ -1,0 +1,58 @@
+﻿@model K53Forum.Models.Article
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+
+    <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/summernote/summernote.min.js"></script>
+    <script>
+        $('#Commented').summernote({
+            height: 80,                 // set editor height
+            //minHeight: null,             // set minimum height of editor
+            //maxHeight: null,             // set maximum height of editor
+            focus: false,                // set focus to editable area after initializing summernote
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['picture', ['picture']],
+                ['codeview', ['codeview']]
+            ]
+        });
+    </script>
+}
+
+<div class="col-md-12">
+    <div class="page-header">
+        <h1>@Model.Title</h1>
+        <small>
+            @if (Membership.GetUser() != null && Model.Member.Username == Membership.GetUser().UserName)
+            {
+                <a href="/article/edit/@Model.Id"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+            }
+            <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/Member/Details/@Model.MemberId">@Model.Member.Fullname</a>,
+            <a href="/Category/Details/@Model.CatagoryId">@Model.Category.Name</a>
+            <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@Model.DateCreated</span>
+            <span class="text-muted">
+            </span>
+        </small>
+    </div>
+
+    <div class="p-t-10">@(Html.Raw(Model.Content))</div>
+   <hr />
+    <div class="m-b-10">
+        <a href="/admin/article/edit/@Model.Id" class="btn btn-primary"><i class="fa fa-save"></i> Chỉnh sửa</a>
+        <a href="/admin/article/index" class="btn btn-default"><i class="fa fa-reply"></i> Trở về trang chủ</a>
+    </div>
+</div>

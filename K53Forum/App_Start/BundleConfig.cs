@@ -44,9 +44,12 @@ namespace K53Forum
             bundles.Add(new ScriptBundle("~/bundles/controller").Include(
                       "~/Scripts/controller/*.js"
                       ));
+            bundles.Add(new ScriptBundle("~/bundles/bootbox").Include(
+                      "~/Scripts/bootbox.min.js"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.lumen.min.css",
+                      "~/Content/bootstrap.min.css",
                       "~/Content/font-awesome.min.css",
                       "~/Content/bootstrap-datetimepicker-build.less",
                       "~/Content/site.css"));

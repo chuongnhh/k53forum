@@ -1,0 +1,81 @@
+﻿
+
+@using K53Forum.CodeHelper;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/favicon.ico" rel="shortcut icon">
+    <title>@ViewBag.Title - k53forum.vn</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/showup")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/admin/home" class="navbar-brand"><i class="fa fa-twitch" aria-hidden="true"></i> k53forum.vn</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="@(CurrentAction.currentAction == "discussion" ? "active" : "")">
+                        <a href="/admin/discussion/index"><i class="fa fa-question-circle" aria-hidden="true"></i> Hỏi đáp</a>
+                    </li>
+                    <li class="@(CurrentAction.currentAction == "article" ? "active" : "")">
+                        <a href="/admin/article/index"><i class="fa fa-edit" aria-hidden="true"></i> Bài viết</a>
+                    </li>
+                    <li class="@(CurrentAction.currentAction == "tutorial" ? "active" : "")">
+                        <a href="/admin/tutorial/index"><i class="fa fa-gift" aria-hidden="true"></i> Hướng dẫn</a>
+                    </li>
+                    <li class="@(CurrentAction.currentAction == "member" ? "active" : "")">
+                        <a href="/admin/member/index"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Thành viên</a>
+                    </li>
+                    <li class="@(CurrentAction.currentAction == "carousel" ? "active" : "")">
+                        <a href="/admin/carousel/index"><i class="fa fa-image" aria-hidden="true"></i> Carousel</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{ Html.RenderAction("_MemberLogin", "home", null);}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content box-content">
+        <div class="row">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="panel-footer modal-footer" style="padding-left:0px;padding-right:0px;padding-bottom:10px;padding-bottom:7px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <p class="pull-left">Thiết kế và phát triển bởi <a target="_blank" href="https://www.facebook.com/chuongnh.hcm">Nguyen Hoang Chuong </a> &copy; @DateTime.Now.Year.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    @Html.Partial("_LoginModal")
+    @Html.Partial("_RegisterModal")
+    @RenderPage("_BackToTop.cshtml")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/website")
+    @Scripts.Render("~/bundles/showup")
+    @Scripts.Render("~/bundles/theme")
+    @Scripts.Render("~/bundles/notify")
+    <script src="~/Areas/Admin/Scripts/loginController.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

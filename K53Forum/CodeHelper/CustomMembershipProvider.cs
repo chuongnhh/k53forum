@@ -152,7 +152,7 @@ namespace K53Forum.CodeHelper
         public override MembershipUser GetUser(string username, bool userIsOnline)
         {
             Member user = db.Members
-                .Where(x=>x.Username==username)
+                .Where(x => x.Username == username)
                 .FirstOrDefault<Member>();
             if (user != null)
             {
@@ -196,9 +196,9 @@ namespace K53Forum.CodeHelper
 
         public override bool ValidateUser(string username, string password)
         {
-            Member acc = db.Members.Where(x=>x.Username==username).FirstOrDefault<Member>();
+            Member acc = db.Members.Where(x => x.Username == username).FirstOrDefault<Member>();
 
-            if (acc != null && acc.Password == password)
+            if (acc != null && acc.Password == Encryption.GenerateMD5(password))
             {
                 return true;
             }

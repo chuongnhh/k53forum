@@ -1,0 +1,26 @@
+﻿@model K53Forum.Models.Discussion
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <div class="page-header">
+        <h1>@Model.Title</h1>
+        <small>
+            <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@Model.MemberId">@Model.Member.Fullname</a>,
+            <a href="/category/details/@Model.CatagoryId">@Model.Category.Name</a>
+            <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@Model.DateCreated</span>
+            <span class="text-muted">
+            </span>
+        </small>
+
+    </div>
+    <div class="p-t-10">@(Html.Raw(Model.Content))</div>
+    <hr />
+    <div class="m-b-10">
+        <a href="/admin/discussion/edit/@Model.Id" class="btn btn-primary"><i class="fa fa-edit"></i>Chỉnh sửa</a>
+        <a href="/admin/discussion/index" class="btn btn-default"><i class="fa fa-reply"></i>Trở về danh sách</a>
+    </div>
+</div>

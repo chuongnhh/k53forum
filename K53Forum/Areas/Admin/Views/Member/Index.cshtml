@@ -1,0 +1,78 @@
+﻿@model IEnumerable<K53Forum.Models.Member>
+
+@{
+    ViewBag.Title = "Danh sách thành viên";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script src="~/Areas/Admin/Scripts/memberController.js"></script>
+}
+<div class="col-md-12">
+    <div class="page-header">
+        <h3>Danh sách thành viên</h3>
+    </div>
+    @Html.ActionLink("Tạo thành viên", "create")
+    <table class="table table-responsive table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Avatar)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role.RoleName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fullname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Birthday)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateCreated)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="member-@item.Id">
+                    <td>
+                        <img src="@item.Avatar" style="max-width:30px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role.RoleName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fullname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Birthday)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCreated)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Sửa", "edit", new { id = item.Id }) |
+                        @Html.ActionLink("Xem", "details", new { id = item.Id }) |
+                        @Html.ActionLink("Xóa", "delete", new { id = item.Id }, new { @class = "delete-member" })
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>

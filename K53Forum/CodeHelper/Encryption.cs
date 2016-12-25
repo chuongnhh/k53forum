@@ -10,6 +10,12 @@ namespace K53Forum.CodeHelper
 {
     public class Encryption
     {
+        public static string GenerateMD5(string yourString)
+        {
+            return string.Join("", MD5.Create().ComputeHash(
+               Encoding.ASCII.GetBytes(yourString)).Select(s => s.ToString("x2")));
+        }
+
         public static string Encrypt(string toEncrypt, bool useHashing)
         {
             byte[] keyArray;

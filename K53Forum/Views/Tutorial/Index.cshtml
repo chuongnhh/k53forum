@@ -1,0 +1,46 @@
+﻿@model IEnumerable<K53Forum.Models.Tutorial>
+
+@{
+    ViewBag.Title = "Hướng dẫn";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-8">
+    <div class="page-header">
+        <h3><strong>Tất cả bài hướng dẫn</strong></h3>
+    </div>
+    @if (Model.Count() <= 0)
+    {
+        <div class="alert alert-success alert-dismissible page-header" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <span>Chưa có bài hướng dẫn nào. Vui lòng quay lại sau. Nhấn vào <a href="/home/index" class="alert-link">đây</a> để trở về <a href="/home/index" class="alert-link">trang chủ</a>.</span>
+
+        </div>
+    }
+    @foreach (var t in Model)
+    {
+        <div class="media">
+            <div class="media-left hidden-xs">
+                <a href="/member/details/@t.MemberId">
+                    <img class="media-object k53-media" src="@t.Member.Avatar" alt="@t.Member.Avatar" style="max-width:50px">
+                </a>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    <a href="/tutorial/details/@t.Id">@t.Title</a>
+                </h4>
+                <small>
+                    <i class="fa fa-eye" aria-hidden="true" id=""> @t.Count</i>
+                    <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/member/details/@t.MemberId">@t.Member.Fullname</a>,
+                    <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@t.DateCreated.</span>
+                </small><br />
+                @(Html.Raw(t.Content.Substring(0, t.Content.Length >= 500 ? 500 : t.Content.Length)))...
+            </div>
+        </div>
+
+        <hr />
+    }
+</div>
+<div class="col-md-4">
+    @{ Html.RenderAction("_MenuBar", "Home", null);}
+</div>

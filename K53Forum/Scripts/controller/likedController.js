@@ -2,9 +2,9 @@
 $(function () {
     $('.liked').off('click').on('click', function () {
         var id = $(this).data('key');
-        console.log(id);
+        //console.log(id);
         $.ajax({
-            url: '/post/liked/' + id,
+            url: '/article/liked/' + id,
             type: 'post',
             data: {},
             success: function (data) {

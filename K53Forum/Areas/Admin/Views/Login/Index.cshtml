@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập hệ thống";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-6 col-md-offset-3">
+    <div class="page-header">
+        <h3>Đăng nhập hệ thống</h3>
+    </div>
+    @using (Html.BeginForm("login", "login", FormMethod.Post, new { @id = "form-login" }))
+    {
+        <fieldset class="form-group">
+            <p style="color:red" id="login-fail"></p>
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="username">Tên tài khoản</label>
+            <input type="text" class="form-control" id="username" name="username" required="" placeholder="Tên tài khoản">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input type="password" class="form-control" id="password" name="password" required="" placeholder="Mật khẩu">
+        </fieldset>
+
+        <fieldset class="form-group">
+            <button type="submit" class="btn btn-primary">Đăng nhập</button>
+        </fieldset>
+    }
+
+</div>

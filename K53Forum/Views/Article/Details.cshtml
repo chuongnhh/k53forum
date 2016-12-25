@@ -1,0 +1,145 @@
+﻿@model K53Forum.Models.Article
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+
+    <link href="~/Scripts/summernote/summernote.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/summernote/summernote.min.js"></script>
+    <script>
+        $('#Commented').summernote({
+            height: 80,                 // set editor height
+            //minHeight: null,             // set minimum height of editor
+            //maxHeight: null,             // set maximum height of editor
+            focus: false,                // set focus to editable area after initializing summernote
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['picture', ['picture']],
+                ['codeview', ['codeview']]
+            ]
+        });
+    </script>
+}
+
+<div class="col-md-8">
+    <div class="page-header">
+        <h1>@Model.Title</h1>
+        <small>
+            @if (Membership.GetUser() != null && Model.Member.Username == Membership.GetUser().UserName)
+            {
+                <a href="/article/edit/@Model.Id"><i class="fa fa-edit"></i> Chỉnh sửa</a>
+            }
+            <span class="text-muted"><i class="fa fa-user-circle-o" aria-hidden="true"></i> Mới nhất bởi: </span><a href="/Member/Details/@Model.MemberId">@Model.Member.Fullname</a>,
+            <a href="/Category/Details/@Model.CatagoryId">@Model.Category.Name</a>
+            <i class="fa fa" aria-hidden="true"></i> <span class="text-muted">@Model.DateCreated</span>
+            <span class="text-muted">
+            </span>
+        </small>
+    </div>
+
+    <div class="p-t-10">@(Html.Raw(Model.Content))</div>
+    <small>
+        <span>
+            @if (Membership.GetUser() != null)
+            {
+                var username = Membership.GetUser().UserName;
+                var memberId = (new K53Forum.Models.DbK53Forum())
+                    .Members.Where(x => x.Username == username)
+                    .FirstOrDefault<K53Forum.Models.Member>().Id;
+                if (Model.Likeds.Where(x => x.MemberId == memberId).FirstOrDefault() == null)
+                {
+                    <a class="liked" id="liked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Thích</a>
+                }
+                else
+                {
+                    <a class="k53-link liked" id="liked-@Model.Id" data-key="@Model.Id" href="javascript:void(0);"> Đã thích</a>
+                }
+            }
+            <i class="fa fa-thumbs-o-up" aria-hidden="true" id="likedCount-@Model.Id"> @Model.Likeds.Count().ToString()</i>
+
+
+            @if (Membership.GetUser() != null)
+            {
+                var username = Membership.GetUser().UserName;
+                var memberId = (new K53Forum.Models.DbK53Forum())
+                    .Members.Where(x => x.Username == username)
+                    .FirstOrDefault<K53Forum.Models.Member>().Id;
+                if (Model.Comments.Where(x => x.MemberId == memberId).FirstOrDefault() != null)
+                {
+                    <a id="commented" data-key="@Model.Id" href="javascript:void(0);"> Bình luận</a>
+                }
+                else
+                {
+                    <a id="commented" data-key="@Model.Id" href="javascript:void(0);" class="k53-link"> Bình luận</a>
+                }
+            }
+            <i class="fa fa-comments-o" aria-hidden="true"> @Model.Comments.Count().ToString()</i>
+            <i class="fa fa-eye" aria-hidden="true" id=""> @Model.Count</i>
+        </span>
+    </small>
+    <hr />
+    @foreach (var c in Model.Comments)
+    {
+        <div class="media comment-@c.Id">
+            <div class="media-left">
+                <a href="/member/details/@c.MemberId">
+                    <img class="media-object" src="@c.Member.Avatar" alt="@c.Member.Avatar" style="max-height:50px;">
+                </a>
+            </div>
+            <div class="media-body">
+                <h5 class="media-heading">
+                    <a href="/member/details/@c.MemberId">@c.Member.Fullname</a>
+                    <small>
+                        <i class="fa fa-calendar-o"> @c.DateCreated</i>
+                        <a href="/article/deletecomment/@c.Id" class="delete-comment"> xóa</a>
+                    </small>
+                </h5>
+                @(Html.Raw(c.Content))
+            </div>
+        </div>
+    }
+    <span id="insert-commented"></span>
+    <div class="page-header">
+        <h4><strong>Viết bình luận</strong></h4>
+    </div>
+    @if (Membership.GetUser() != null)
+    {
+        using (Html.BeginForm("commented", "article", FormMethod.Post, new { id = "form-commented" }))
+        {
+            <fieldset class="form-group">
+                <input type="hidden" class="form-control" id="Id" name="Id" value="@Model.Id" />
+                @*<input type="text" class="form-control" data-PostId="@Model.Id" id="Commented" name="Commented" required=""/>*@
+                <textarea class="form-control" data-PostId="@Model.Id" id="Commented" name="Commented"></textarea>
+            </fieldset>
+
+            <fieldset class="form-group">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-send-o"></i> Gửi bình luận</button>
+            </fieldset>
+        }
+    }
+    else
+    {
+        <div class="m-b-10">
+            <div class="alert alert-success alert-dismissible page-header" role="alert" style="margin-top:0px;">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <span>Vui lòng <a href="#" data-toggle="modal" data-target="#login-modal" class="alert-link">đăng nhập</a> để có thể viết bình luận.</span>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="col-md-4">
+    @{ Html.RenderAction("_MenuBar", "Home", null);}
+</div>

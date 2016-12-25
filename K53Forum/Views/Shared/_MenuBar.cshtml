@@ -1,79 +1,86 @@
 ﻿@{
-    var category = (List<K53Forum.Models.Category>)ViewBag.Category;
-    var post = (List<K53Forum.Models.Post>)ViewBag.Post;
+    var categories = (List<K53Forum.Models.Category>)ViewBag.Categories;
+    var articles = (List<K53Forum.Models.Article>)ViewBag.Articles;
+    var discussions = (List<K53Forum.Models.Discussion>)ViewBag.Discussions;
+    var tutorials = (List<K53Forum.Models.Tutorial>)ViewBag.Tutorials;
+    var members = (List<K53Forum.Models.Member>)ViewBag.Members;
     var count = ViewBag.Count;
 }
 @section scripts{
-    <div id="fb-root"></div>
-    <script>
-        (function (d, s, id) {
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) return;
-            js = d.createElement(s); js.id = id;
-            js.src = "//connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v2.8&appId=1312140305471378";
-            fjs.parentNode.insertBefore(js, fjs);
-        } (document, 'script', 'facebook-jssdk'));</script>
+ 
 }
 
-@if (Membership.GetUser() != null)
+@if (categories.Count() >= 0)
 {
-    <div class="p-b-10">
-        <a href="@Url.Action("create","post")" class="btn btn-primary btn-block"><i class="fa fa-edit" aria-hidden="true"></i> Tạo cuộc thảo luận</a>
+    <div class="m-b-10">
+        <h4 class="page-header"><strong>Chuyên mục</strong></h4>
+        <a href="/category/index" class="badge">Tất cả chuyên mục</a>
+        @foreach (var c in categories)
+        {
+            <a href="/category/details/@c.Id" class="badge">@c.Name</a>
+        }
     </div>
 }
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong>Tìm kiếm</strong>
-    </div>
-    <div class="panel-body">
-        <form>
-            <fieldset class="form-group">
-                <input type="text" class="form-control" id="search" placeholder="Nhập từ khóa...">
-            </fieldset>
-        </form>
-    </div>
-</div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong>Chuyên mục</strong>
-    </div>
-    <div class="panel-body">
-        <p>
-            <span class="badge pull-right">@ViewBag.Count</span>
-            <a href="/category/index"><i class="fa fa-folder" aria-hidden="true"></i> Tất cả chuyên mục</a>
-        </p>
-        @foreach (var c in category)
-            {
+@if (discussions.Count() >= 0)
+{
+    <div class="m-b-10">
+        <h4 class="page-header"><strong>Thảo luận tiêu biểu</strong></h4>
+        @foreach (var p in discussions)
+        {
             <p>
-                <span class="badge pull-right">@c.Posts.Count()</span>
-                <a href="/category/details/@c.Id"><i class="fa fa-folder" aria-hidden="true"></i> @c.Name</a>
+                <span class=" badge">@p.Replies.Count()</span>
+                <a href="/discussion/details/@p.Id">@p.Title</a>
             </p>
         }
     </div>
-</div>
+}
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong>Thảo luận tiêu biểu</strong>
-    </div>
-    <div class="panel-body">
-        @foreach (var p in post)
-            {
+@if (articles.Count() >= 0)
+{
+    <div class="m-b-10">
+        <h4 class="page-header"><strong>Bài viết mới nhất</strong></h4>
+        @foreach (var p in articles)
+        {
             <p>
-                <span class=" badge pull-right">@p.Likeds.Count()</span>
-                <a href="/post/details/@p.Id"><i class="fa fa-folder" aria-hidden="true"></i> @p.Title</a>
+                <span class=" badge">@p.Likeds.Count()</span>
+                <a href="/article/details/@p.Id">@p.Title</a>
             </p>
         }
     </div>
-</div>
+}
 
+@if (tutorials.Count() >= 0)
+{
+    <div class="m-b-10">
+        <h4 class="page-header"><strong>Hướng dẫn mới nhất</strong></h4>
+        @foreach (var p in tutorials)
+        {
+            <p>
+                <span class=" badge">@p.Count</span>
+                <a href="/tutorial/details/@p.Id">@p.Title</a>
+            </p>
+        }
+    </div>
+}
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong>Mạng xã hội</strong>
+@if (members.Count() >= 0)
+{
+    <div class="m-b-10">
+        <h4 class="page-header"><strong>Thành viên tiêu biểu</strong></h4>
+        @foreach (var m in members)
+        {
+            <div class="media">
+                <div class="media-left">
+                    <a href="/member/details/@m.Id">
+                        <img class="media-object" src="@m.Avatar" alt="@m.Avatar" style="max-width:50px;">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h5 class="media-heading"><a href="/member/details/@m.Id">@m.Fullname</a></h5>
+                    <strong>@(m.Articles.Count() + m.Discussions.Count() + m.Tutorials.Count())</strong> điểm tin cậy
+                </div>
+            </div>
+        }
     </div>
-    <div class="panel-body">
-        <div class="fb-page" data-href="https://www.facebook.com/rigenled.lighting/" data-tabs="timeline" data-height="400" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/rigenled.lighting/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/rigenled.lighting/">Rigen Led Lighting</a></blockquote></div>
-    </div>
-</div>
+}

@@ -33,9 +33,7 @@ namespace K53Forum.Controllers
             }
             var model = db.Categories.Find(id);
             ViewBag.Title = model.Name;
-           
-
-            return View(model.Posts);
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)
